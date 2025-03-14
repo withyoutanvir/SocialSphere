@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
   plugins: [react()],
-  base: "./", // Use relative paths for assets instead of absolute
+  base: "/Chatapp/", // 👈 Add this line (your repo name)
   server: {
     proxy: {
       "/api": {
@@ -13,7 +13,5 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    outDir: "dist",
-  },
 });
+
