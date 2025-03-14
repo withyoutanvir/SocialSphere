@@ -9,5 +9,14 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/withyoutanvir/Chatapp.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/withyoutanvir/Chatapp/issues"
+  },
+  "homepage": "https://github.com/withyoutanvir/Chatapp#readme"
 }
