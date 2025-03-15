@@ -1,28 +1,22 @@
 {
-  "name": "chat-app",
-  "version": "1.0.0",
-  "description": "A chat application",
-  "main": "index.js",
-  "scripts": {
-    "build": "npm install && npm run build --prefix frontend",
-    "start": "node backend/index.js",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d frontend/dist"
-  },
-  "keywords": [],
-  "author": "Tanvir",
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/withyoutanvir/Chatapp.git"
-  },
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/withyoutanvir/Chatapp/issues"
-  },
-  "homepage": "https://withyoutanvir.github.io/Chatapp/",
-  "devDependencies": {
-    "gh-pages": "^6.3.0"
+    "name": "chat-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "homepage": "https://withyoutanvir.github.io/SocialSphere",
+    "scripts": {
+      "build": "npm install --prefix frontend && npm run build --prefix frontend",
+      "start": "npm run start --prefix backend",
+      "predeploy": "npm run build --prefix frontend",
+      "deploy": "gh-pages -d frontend/dist",
+      "dev": "vite",
+      "serve": "vite preview"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "gh-pages": "^6.3.0"
+    }
   }
-}
-
+  
