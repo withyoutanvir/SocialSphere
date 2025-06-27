@@ -29,14 +29,26 @@ mongoose.connect(mongoURI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
+// Allowed origins for CORS
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://socialsphere0.netlify.app",
+];
+
 // Init express app and server
 const app = express();
 const server = http.createServer(app);
 
-// Socket.io Setup
+// Socket.io Setup with CORS
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: function(origin, callback) {
+      if (!origin) return callback(null, true); // allow non-browser requests like mobile or curl
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("CORS error: Origin not allowed"), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   },
 });
@@ -66,16 +78,23 @@ io.on("connection", (socket) => {
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
+
+// CORS middleware for Express
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = "The CORS policy for this site does not allow access from the specified Origin.";
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
   credentials: true,
 }));
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
-
-// Removed frontend static serving code here because frontend is on Netlify
 
 // Start server
 const PORT = process.env.PORT || 5001;
