@@ -1,6 +1,6 @@
-# 🌐 SocialSpher — Real-Time Chat App
+# 🌐 SocialSphere — Real-Time Chat App
 
-**SocialSpher** is a real-time chat application built with the MERN stack. It enables secure, instant communication between users with a responsive UI, real-time messaging, and online status indicators — all hosted on modern cloud platforms.
+**SocialSphere** is a real-time chat application built with the MERN stack. It enables secure, instant communication between users with a responsive UI, real-time messaging, and online status indicators — all hosted on modern cloud platforms.
 
 ## 🔗 Live URLs
 
