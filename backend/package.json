@@ -4,10 +4,10 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev": "nodemon src/index.js",  // Used for local development
-    "start": "node src/index.js",   // Default start command for serverless or production deployment
-    "vercel-build": "npm run build",  // Optional for Vercel if you need a specific build step for serverless
-    "build": "echo 'No build step required for backend'"  // For Vercel to skip unnecessary build steps
+    "dev": "nodemon src/index.js",
+    "start": "node src/index.js",
+    "vercel-build": "npm run build",
+    "build": "echo 'No build step required for backend'"
   },
   "keywords": [],
   "author": "",
@@ -21,7 +21,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.1",
+    "mongoose": "^8.15.0",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

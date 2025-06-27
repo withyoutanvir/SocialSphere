@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001" : "/";
+const BASE_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5001";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -14,14 +14,15 @@ export const useAuthStore = create((set, get) => ({
   onlineUsers: [],
   socket: null,
 
-  // Removed useCallback, as it's not compatible with Zustand store
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
+      console.log("✅ Authenticated user:", res.data);
       set({ authUser: res.data });
+      // Connect socket only once after successful auth
       get().connectSocket();
     } catch (error) {
-      console.error("Error in checkAuth:", error);
+      console.error("❌ Error in checkAuth:", error);
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
@@ -33,10 +34,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/signup", data);
       set({ authUser: res.data });
-      toast.success("Account created successfully");
+      toast.success("✅ Account created successfully");
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Signup failed");
     } finally {
       set({ isSigningUp: false });
     }
@@ -47,10 +48,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
-      toast.success("Logged in successfully");
+      toast.success("✅ Logged in successfully");
       get().connectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Login failed");
     } finally {
       set({ isLoggingIn: false });
     }
@@ -60,10 +61,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       await axiosInstance.post("/auth/logout");
       set({ authUser: null, socket: null, onlineUsers: [] });
-      toast.success("Logged out successfully");
+      toast.success("✅ Logged out successfully");
       get().disconnectSocket();
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message || "Logout failed");
     }
   },
 
@@ -72,10 +73,10 @@ export const useAuthStore = create((set, get) => ({
     try {
       const res = await axiosInstance.put("/auth/update-profile", data);
       set({ authUser: res.data });
-      toast.success("Profile updated successfully");
+      toast.success("✅ Profile updated");
     } catch (error) {
-      console.log("error in update profile:", error);
-      toast.error(error.response.data.message);
+      console.error("❌ Update failed:", error);
+      toast.error(error?.response?.data?.message || "Update failed");
     } finally {
       set({ isUpdatingProfile: false });
     }
@@ -83,17 +84,29 @@ export const useAuthStore = create((set, get) => ({
 
   connectSocket: () => {
     const { authUser, socket } = get();
-    if (!authUser || (socket && socket.connected)) return; // Prevent duplicate connections
+
+    if (!authUser?._id) {
+      console.warn("❌ Cannot connect socket: authUser or _id is missing", authUser);
+      return;
+    }
+
+    if (socket?.connected) {
+      console.log("ℹ️ Socket already connected");
+      return;
+    }
 
     const newSocket = io(BASE_URL, {
       query: { userId: authUser._id },
     });
 
-    newSocket.on("connect", () => {
-      console.log("Socket connected:", newSocket.id);
+    newSocket.once("connect", () => {
+      console.log("✅ Socket connected:", newSocket.id);
     });
 
+    // Remove previous listeners if any, to avoid duplicates
+    newSocket.off("getOnlineUsers");
     newSocket.on("getOnlineUsers", (userIds) => {
+      console.log("👥 Online users:", userIds);
       set({ onlineUsers: userIds });
     });
 
