@@ -15,6 +15,13 @@ export const useAuthStore = create((set, get) => ({
   socket: null,
 
   checkAuth: async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("🔑 No token found in localStorage. Skipping auth check.");
+      set({ authUser: null, isCheckingAuth: false });
+      return;
+    }
+
     try {
       const res = await axiosInstance.get("/auth/check");
       console.log("✅ Authenticated user:", res.data);
@@ -32,8 +39,11 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      localStorage.setItem("token", res.data.token); // ✅ store token
-      set({ authUser: res.data });
+
+      const { token, ...userData } = res.data; // ✅ Destructure token and user
+      localStorage.setItem("token", token); // ✅ Save token
+      set({ authUser: userData }); // ✅ Set only user data
+
       toast.success("✅ Account created successfully");
       get().connectSocket();
     } catch (error) {
@@ -47,8 +57,11 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      localStorage.setItem("token", res.data.token); // ✅ store token
-      set({ authUser: res.data });
+
+      const { token, ...userData } = res.data; // ✅ Destructure token and user
+      localStorage.setItem("token", token); // ✅ Save token
+      set({ authUser: userData }); // ✅ Set only user data
+
       toast.success("✅ Logged in successfully");
       get().connectSocket();
     } catch (error) {
@@ -61,7 +74,7 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      localStorage.removeItem("token"); // ✅ clear token
+      localStorage.removeItem("token");
       set({ authUser: null, socket: null, onlineUsers: [] });
       toast.success("✅ Logged out successfully");
       get().disconnectSocket();

@@ -19,27 +19,30 @@ const App = () => {
 
   const hasLogged = useRef(false);
 
+  // ✅ Auth check on mount
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+  }, []);
 
+  // ✅ Optional logging once
   useEffect(() => {
-    if (!hasLogged.current) {
-      console.log("Auth User:", authUser);
-      console.log("Online Users:", onlineUsers);
+    if (!hasLogged.current && !isCheckingAuth) {
+      console.log("✅ Auth User:", authUser);
+      console.log("👥 Online Users:", onlineUsers);
       hasLogged.current = true;
     }
-  }, [authUser, onlineUsers]);
+  }, [authUser, onlineUsers, isCheckingAuth]);
 
-  if (isCheckingAuth)
+  if (isCheckingAuth) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <Loader className="size-10 animate-spin" />
+        <Loader className="w-10 h-10 animate-spin text-primary" />
       </div>
     );
+  }
 
   return (
-    <div data-theme={theme}>
+    <div data-theme={theme} className="min-h-screen bg-base-100">
       <Navbar />
       <Routes>
         <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
@@ -49,7 +52,7 @@ const App = () => {
         <Route path="/profile" element={authUser ? <ProfilePage /> : <Navigate to="/login" />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
-      <Toaster />
+      <Toaster position="top-center" />
     </div>
   );
 };

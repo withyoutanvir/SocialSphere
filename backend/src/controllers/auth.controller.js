@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import cloudinary from "../lib/cloudinary.js";
 
+// ✅ Signup
 export const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
   try {
@@ -29,9 +30,10 @@ export const signup = async (req, res) => {
 
     await newUser.save();
 
-    const token = generateToken(newUser._id); // ✅ NEW
+    const token = generateToken(newUser._id); // ✅ Generate token
+
     res.status(201).json({
-      token, // ✅ return token
+      token,
       _id: newUser._id,
       fullName: newUser.fullName,
       email: newUser.email,
@@ -43,7 +45,7 @@ export const signup = async (req, res) => {
   }
 };
 
-
+// ✅ Login
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -53,9 +55,10 @@ export const login = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = generateToken(user._id); // ✅ NEW
+    const token = generateToken(user._id);
+
     res.status(200).json({
-      token, // ✅ return token
+      token,
       _id: user._id,
       fullName: user.fullName,
       email: user.email,
@@ -67,12 +70,9 @@ export const login = async (req, res) => {
   }
 };
 
+// ✅ Logout (client should clear token from localStorage)
 export const logout = (req, res) => {
   try {
-    res.cookie("jwt", "", {
-      httpOnly: true,
-      expires: new Date(0),
-    });
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.error("❌ Error in logout:", error.message);
@@ -80,6 +80,7 @@ export const logout = (req, res) => {
   }
 };
 
+// ✅ Update Profile (requires token and cloudinary)
 export const updateProfile = async (req, res) => {
   try {
     const { profilePic } = req.body;
@@ -109,6 +110,7 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// ✅ Check Auth
 export const checkAuth = (req, res) => {
   try {
     if (!req.user) {
