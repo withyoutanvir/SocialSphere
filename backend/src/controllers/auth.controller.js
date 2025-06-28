@@ -28,9 +28,10 @@ export const signup = async (req, res) => {
     });
 
     await newUser.save();
-    generateToken(newUser._id, res);
 
+    const token = generateToken(newUser._id); // ✅ NEW
     res.status(201).json({
+      token, // ✅ return token
       _id: newUser._id,
       fullName: newUser.fullName,
       email: newUser.email,
@@ -42,6 +43,7 @@ export const signup = async (req, res) => {
   }
 };
 
+
 export const login = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -51,9 +53,9 @@ export const login = async (req, res) => {
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
 
-    generateToken(user._id, res);
-
+    const token = generateToken(user._id); // ✅ NEW
     res.status(200).json({
+      token, // ✅ return token
       _id: user._id,
       fullName: user.fullName,
       email: user.email,
