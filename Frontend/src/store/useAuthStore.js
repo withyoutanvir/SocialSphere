@@ -15,11 +15,21 @@ export const useAuthStore = create((set, get) => ({
   socket: null,
 
   checkAuth: async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.warn("❌ No token found in localStorage");
+      set({ authUser: null, isCheckingAuth: false });
+      return;
+    }
+
     try {
-      const res = await axiosInstance.get("/auth/check");
+      const res = await axiosInstance.get("/auth/check", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("✅ Authenticated user:", res.data);
       set({ authUser: res.data });
-      // Connect socket only once after successful auth
       get().connectSocket();
     } catch (error) {
       console.error("❌ Error in checkAuth:", error);
@@ -33,6 +43,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
+      localStorage.setItem("token", res.data.token);
       set({ authUser: res.data });
       toast.success("✅ Account created successfully");
       get().connectSocket();
@@ -47,6 +58,7 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
+      localStorage.setItem("token", res.data.token);
       set({ authUser: res.data });
       toast.success("✅ Logged in successfully");
       get().connectSocket();
@@ -60,6 +72,7 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
+      localStorage.removeItem("token");
       set({ authUser: null, socket: null, onlineUsers: [] });
       toast.success("✅ Logged out successfully");
       get().disconnectSocket();
@@ -71,7 +84,12 @@ export const useAuthStore = create((set, get) => ({
   updateProfile: async (data) => {
     set({ isUpdatingProfile: true });
     try {
-      const res = await axiosInstance.put("/auth/update-profile", data);
+      const token = localStorage.getItem("token");
+      const res = await axiosInstance.put("/auth/update-profile", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       set({ authUser: res.data });
       toast.success("✅ Profile updated");
     } catch (error) {
@@ -103,7 +121,6 @@ export const useAuthStore = create((set, get) => ({
       console.log("✅ Socket connected:", newSocket.id);
     });
 
-    // Remove previous listeners if any, to avoid duplicates
     newSocket.off("getOnlineUsers");
     newSocket.on("getOnlineUsers", (userIds) => {
       console.log("👥 Online users:", userIds);
