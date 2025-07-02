@@ -29,20 +29,36 @@ mongoose.connect(mongoURI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err.message));
 
-// Allowed origins for CORS
-const allowedOrigins = [
-  "https://socialsphere0.netlify.app",
-  "http://localhost:5173",
-];
-
 // Init express app and server
 const app = express();
 const server = http.createServer(app);
 
+// ✅ Dynamic CORS setup
+const allowedOrigins = [
+  "https://socialsphere0.netlify.app",
+  "http://localhost:5173"
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".netlify.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS: " + origin));
+    }
+  },
+  credentials: true,
+}));
+
 // Socket.io Setup
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith(".netlify.app")) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by Socket.IO CORS: " + origin));
+      }
+    },
     credentials: true,
   },
 });
@@ -72,12 +88,6 @@ io.on("connection", (socket) => {
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
-
-// ✅ Simplified and safe CORS middleware for Express
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true,
-}));
 
 // Routes
 app.use("/api/auth", authRoutes);
