@@ -31,7 +31,7 @@ export const useAuthStore = create((set, get) => ({
       get().connectSocket();
     } catch (error) {
       console.error("❌ Error in checkAuth:", error);
-      localStorage.removeItem("token"); // 🧹 Clear invalid token
+      localStorage.removeItem("token");
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });

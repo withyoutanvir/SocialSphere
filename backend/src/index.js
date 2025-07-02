@@ -31,24 +31,18 @@ mongoose.connect(mongoURI)
 
 // Allowed origins for CORS
 const allowedOrigins = [
-  "http://localhost:5173",
   "https://socialsphere0.netlify.app",
+  "http://localhost:5173",
 ];
 
 // Init express app and server
 const app = express();
 const server = http.createServer(app);
 
-// Socket.io Setup with CORS
+// Socket.io Setup
 const io = new Server(server, {
   cors: {
-    origin: function(origin, callback) {
-      if (!origin) return callback(null, true); // allow non-browser requests like mobile or curl
-      if (allowedOrigins.indexOf(origin) === -1) {
-        return callback(new Error("CORS error: Origin not allowed"), false);
-      }
-      return callback(null, true);
-    },
+    origin: allowedOrigins,
     credentials: true,
   },
 });
@@ -74,21 +68,14 @@ io.on("connection", (socket) => {
   });
 });
 
-// Middleware (with increased payload limit)
+// Middleware
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
 
-// CORS middleware for Express
+// ✅ Simplified and safe CORS middleware for Express
 app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = "The CORS policy for this site does not allow access from the specified Origin.";
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
+  origin: allowedOrigins,
   credentials: true,
 }));
 

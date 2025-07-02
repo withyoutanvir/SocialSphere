@@ -5,18 +5,20 @@
     "main": "index.js",
     "homepage": "https://withyoutanvir.github.io/SocialSphere",
     "scripts": {
-      "build": "npm install --prefix frontend && npm run build --prefix frontend",
-      "start": "npm run start --prefix backend",
-      "predeploy": "npm run build --prefix frontend",
-      "deploy": "gh-pages -d frontend/dist",
-      "dev": "vite",
-      "serve": "vite preview"
+        "build": "npm install --prefix frontend && npm run build --prefix frontend",
+        "start": "npm run start --prefix backend",
+        "predeploy": "npm run build --prefix frontend",
+        "deploy": "gh-pages -d frontend/dist",
+        "dev": "vite",
+        "serve": "vite preview"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
     "devDependencies": {
-      "gh-pages": "^6.3.0"
+        "gh-pages": "^6.3.0"
+    },
+    "dependencies": {
+        "cors": "^2.8.5"
     }
-  }
-  
+}
