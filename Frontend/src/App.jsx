@@ -28,7 +28,7 @@ const App = () => {
   useEffect(() => {
     if (!hasLogged.current && !isCheckingAuth) {
       console.log("✅ Auth User:", authUser);
-      console.log("👥 Online Users:", onlineUsers);
+     
       hasLogged.current = true;
     }
   }, [authUser, onlineUsers, isCheckingAuth]);

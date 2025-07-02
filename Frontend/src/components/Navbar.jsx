@@ -13,12 +13,17 @@ const Navbar = () => {
       <div className="container mx-auto px-4 h-16">
         <div className="flex items-center justify-between h-full">
           <div className="flex items-center gap-8">
-            <Link to="/" className="flex items-center gap-2.5 hover:opacity-80 transition-all">
-              <div className="size-9 rounded-lg bg-primary/10 flex items-center justify-center">
-                <MessageSquare className="w-5 h-5 text-primary" />
-              </div>
-              <h1 className="text-lg font-bold">Chatty</h1>
-            </Link>
+            <Link to="/" className="flex items-center gap-3 hover:scale-105 transition-transform">
+  {/* 3D Logo Box */}
+  <div className="w-12 h-12 rounded-[1rem] bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 shadow-[inset_-4px_-4px_12px_rgba(255,255,255,0.2),_4px_4px_12px_rgba(0,0,0,0.3)] flex items-center justify-center transform-gpu">
+    <MessageSquare className="w-6 h-6 text-white drop-shadow-[0_1px_1px_rgba(0,0,0,0.5)]" />
+  </div>
+
+  {/* App Name */}
+  <h1 className="text-xl font-bold text-base-content tracking-wider drop-shadow-md">
+    Social Sphere
+  </h1>
+</Link>
           </div>
 
           <div className="flex items-center gap-2">

@@ -1,18 +1,17 @@
+// lib/axios.js
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5001/api",
-  withCredentials: true, // Send cookies if backend uses them (optional here, since you're using Bearer)
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5001/api",
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
-    if (token) {
+    if (token && token !== "undefined") {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("🔑 Token attached to request:", token);
-    } else {
-      console.warn("⚠️ No token found in localStorage");
+      // console.log("🔐 Attaching token to request:", token);
     }
     return config;
   },

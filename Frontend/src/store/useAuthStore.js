@@ -16,52 +16,64 @@ export const useAuthStore = create((set, get) => ({
 
   checkAuth: async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.warn("🔑 No token found in localStorage. Skipping auth check.");
+
+    if (!token || token === "undefined") {
+      console.warn("🔑 No valid token found. Skipping auth check.");
       set({ authUser: null, isCheckingAuth: false });
       return;
     }
 
     try {
       const res = await axiosInstance.get("/auth/check");
-      console.log("✅ Authenticated user:", res.data);
+   
+
       set({ authUser: res.data });
       get().connectSocket();
     } catch (error) {
       console.error("❌ Error in checkAuth:", error);
+      localStorage.removeItem("token"); // 🧹 Clear invalid token
       set({ authUser: null });
     } finally {
       set({ isCheckingAuth: false });
     }
   },
 
-  signup: async (data) => {
-    set({ isSigningUp: true });
-    try {
-      const res = await axiosInstance.post("/auth/signup", data);
+signup: async (data, navigate) => {
+  set({ isSigningUp: true });
+  try {
+    const res = await axiosInstance.post("/auth/signup", data);
+    const { token } = res.data;
 
-      const { token, ...userData } = res.data; // ✅ Destructure token and user
-      localStorage.setItem("token", token); // ✅ Save token
-      set({ authUser: userData }); // ✅ Set only user data
-
+    if (token && token !== "undefined") {
       toast.success("✅ Account created successfully");
-      get().connectSocket();
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Signup failed");
-    } finally {
-      set({ isSigningUp: false });
+      navigate("/login"); // ✅ redirect to login
+    } else {
+      throw new Error("No valid token received");
     }
-  },
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Signup failed");
+  } finally {
+    set({ isSigningUp: false });
+  }
+},
 
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
+      console.log("🟢 Login response:", res.data);
 
-      const { token, ...userData } = res.data; // ✅ Destructure token and user
-      localStorage.setItem("token", token); // ✅ Save token
-      set({ authUser: userData }); // ✅ Set only user data
+      const { token, ...userData } = res.data;
 
+      if (token && token !== "undefined") {
+        localStorage.setItem("token", token);
+        // console.log("💾 Token saved:", token);
+      } else {
+        console.error("❌ No valid token returned on login.");
+        throw new Error("No valid token received");
+      }
+
+      set({ authUser: userData });
       toast.success("✅ Logged in successfully");
       get().connectSocket();
     } catch (error) {
@@ -74,12 +86,13 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      localStorage.removeItem("token");
-      set({ authUser: null, socket: null, onlineUsers: [] });
-      toast.success("✅ Logged out successfully");
-      get().disconnectSocket();
     } catch (error) {
       toast.error(error?.response?.data?.message || "Logout failed");
+    } finally {
+      localStorage.removeItem("token");
+      set({ authUser: null, socket: null, onlineUsers: [] });
+      get().disconnectSocket();
+      toast.success("✅ Logged out successfully");
     }
   },
 
@@ -106,7 +119,7 @@ export const useAuthStore = create((set, get) => ({
     }
 
     if (socket?.connected) {
-      console.log("ℹ️ Socket already connected");
+      // console.log("ℹ️ Socket already connected");
       return;
     }
 
@@ -115,12 +128,12 @@ export const useAuthStore = create((set, get) => ({
     });
 
     newSocket.once("connect", () => {
-      console.log("✅ Socket connected:", newSocket.id);
+      // console.log("✅ Socket connected:", newSocket.id);
     });
 
     newSocket.off("getOnlineUsers");
     newSocket.on("getOnlineUsers", (userIds) => {
-      console.log("👥 Online users:", userIds);
+      // console.log("👥 Online users:", userIds);
       set({ onlineUsers: userIds });
     });
 
