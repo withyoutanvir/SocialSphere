@@ -1,40 +1,43 @@
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
 # 🌐 SocialSphere — Real-Time Chat App
 
-**SocialSphere** is a real-time chat application built with the MERN stack. It enables secure, instant communication between users with a responsive UI, real-time messaging, and online status indicators — all hosted on modern cloud platforms.
+**SocialSphere** is a real-time chat application built using the **MERN stack**. It enables secure and instant one-on-one messaging with **Socket.io**, supports **authentication**, **online/offline status**, **mobile responsiveness**, and **dark/light mode** — all hosted on modern cloud platforms.
 
-## 🔗 Live URLs
+---
 
-- 🖥️ **Frontend** (Netlify): [https://socialsphere0.netlify.app](https://socialsphere0.netlify.app)
+## 🔗 Live Demo
 
+- 🖥️ Frontend (Netlify): [https://socialsphere0.netlify.app](https://socialsphere0.netlify.app)
 
 ---
 
 ## 🚀 Features
 
 - 🔐 JWT-based Authentication (Signup/Login)
-- 💬 Real-time One-to-One Messaging with Socket.io
-- 🟢 Online/Offline Status
-- 🔍 Search Users
-- 🌓 Dark/Light Mode
-- 📱 Mobile-Friendly UI
-- ☁️ Deployment: Netlify + Render
+- 💬 Real-time One-to-One Messaging using **Socket.io**
+- 🟢 Live Online/Offline Status Indicators
+- 🔍 Search Users by Name or Email
+- 🌓 Dark & Light Mode Toggle
+- 📱 Mobile-Friendly and Responsive UI
+- ☁️ Deployed using **Netlify** (Frontend) & **Render** (Backend)
 
 ---
 
 ## 🛠 Tech Stack
 
-### Frontend
-- React.js (Vite)
+### 💻 Frontend
+- React.js (with Vite)
 - Tailwind CSS
-- Zustand
+- Zustand (for global state)
 - Axios
 - Lucide Icons
 - React Router DOM
 
-### Backend
+### 🧠 Backend
 - Node.js + Express.js
 - MongoDB + Mongoose
-- Socket.io
+- Socket.io (WebSocket support)
 - JWT + bcryptjs + cookie-parser
 - CORS + dotenv
 
@@ -42,29 +45,58 @@
 
 ## 📁 Folder Structure
 
-SocialSpher/
-├── backend/ # Express backend
-│ ├── routes/
-│ ├── controllers/
-│ ├── models/
-│ ├── middleware/
-│ └── server.js
+<pre>
+Social Sphere
+├── backend/ # Express Backend
+│ ├── routes/ # API endpoints
+│ ├── controllers/ # Business logic
+│ ├── models/ # MongoDB schemas
+│ ├── middleware/ # Auth and error handlers
+│ └── server.js # Entry point
 │
-├── frontend/ # React frontend
-│ ├── components/
-│ ├── pages/
-│ ├── store/
-│ └── App.jsx, main.jsx
+├── frontend/ # React Frontend
+│ ├── components/ # Reusable UI components
+│ ├── pages/ # Route-based pages
+│ ├── store/ # Zustand store
+│ ├── App.jsx # App structure
+│ └── main.jsx # Root file
 │
 ├── .env # Environment variables
-├── netlify.toml # Netlify config
+├── netlify.toml # Netlify configuration
 └── README.md
+</pre>
 
+## 📈 Future Enhancements
+📷 Profile Picture Uploads
 
-# Backend
-cd backend
-npm install
+🧵 Group Chat Support
 
-# Frontend
-cd ../frontend
-npm install
+📬 Message Read Receipts
+
+🔔 Real-Time Notifications
+
+💬 Emoji Support + Rich Media
+
+## 📄 License
+MIT License
+
+Copyright (c) 2025 Tanvir SIngh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is 
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included 
+in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+DEALINGS IN THE SOFTWARE.
+
