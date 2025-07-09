@@ -78,11 +78,11 @@ Social Sphere
 🔔 Real-Time Notifications
 
 💬 Emoji Support + Rich Media
-
+---
 ## ⚙️ Installation
 
 ### 1. Clone the repository
-
+``` bash
 git clone https://github.com/withyoutanvir/SocialSphere.git
 
 ### 2.backend-Setup
@@ -100,7 +100,7 @@ npm run dev
 MONGO_URI=your_mongo_connection
 JWT_SECRET=your_jwt_secret
 PORT=5000
-
+---
 ## 📄 License
 MIT License
 
