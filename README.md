@@ -85,24 +85,21 @@ Social Sphere
 
 git clone https://github.com/withyoutanvir/SocialSphere.git
 
--  backend-Setup
+### 2.backend-Setup
 cd SocialSphere
 cd Backend
 npm install
 npm run dev
 ---
--  Front-end Setup
+### 3.Front-end Setup
 cd frontend
 npm install
 npm run dev
 
-- Add this to your .env
+### 4.Add this to your .env
 MONGO_URI=your_mongo_connection
 JWT_SECRET=your_jwt_secret
 PORT=5000
-
-- Start Command
-npm run dev
 
 ## 📄 License
 MIT License
