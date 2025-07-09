@@ -101,6 +101,7 @@ MONGO_URI=your_mongo_connection
 JWT_SECRET=your_jwt_secret
 PORT=5000
 ---
+```
 ## 📄 License
 MIT License
 
