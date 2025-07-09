@@ -80,9 +80,9 @@ Social Sphere
 💬 Emoji Support + Rich Media
 ---
 ## ⚙️ Installation
-
-### 1. Clone the repository
 ``` bash
+### 1. Clone the repository
+
 git clone https://github.com/withyoutanvir/SocialSphere.git
 
 ### 2.backend-Setup
