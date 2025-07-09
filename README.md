@@ -86,11 +86,11 @@ Social Sphere
 git clone https://github.com/withyoutanvir/SocialSphere.git
 
 ### 2.backend-Setup
-cd SocialSphere
-cd Backend
-npm install
-npm run dev
----
+ cd SocialSphere
+ cd Backend
+ npm install
+ npm run dev
+
 ### 3.Front-end Setup
 cd frontend
 npm install
