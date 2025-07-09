@@ -5,6 +5,8 @@
 **SocialSphere** is a real-time chat application built using the **MERN stack**. It enables secure and instant one-on-one messaging with **Socket.io**, supports **authentication**, **online/offline status**, **mobile responsiveness**, and **dark/light mode** — all hosted on modern cloud platforms.
 
 ---
+### Dashboard 
+![Home](./assets/Dashboard.png)
 
 ## 🔗 Live Demo
 
