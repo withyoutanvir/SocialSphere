@@ -79,6 +79,31 @@ Social Sphere
 
 💬 Emoji Support + Rich Media
 
+## ⚙️ Installation
+
+### 1. Clone the repository
+
+git clone https://github.com/withyoutanvir/SocialSphere.git
+
+## backend -Setup
+cd SocialSphere
+cd Backend
+npm install
+npm run dev
+---
+## Front-end Setup
+cd frontend
+npm install
+npm run dev
+
+## Add this to your .env
+MONGO_URI=your_mongo_connection
+JWT_SECRET=your_jwt_secret
+PORT=5000
+
+## Start Command
+npm run dev
+
 ## 📄 License
 MIT License
 
